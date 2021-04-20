@@ -1,0 +1,60 @@
+#start 
+
+## creates the inverse of a special matrix cache
+makeCacheMatrix <- function(x = matrix()){
+  inv <- NULL
+  set <- function(y){
+    x <<- y
+    inv <<- NULL
+  }
+  get <- function() {x}
+  setInverse <- function(inverse) {inv <<- inverse}
+  getInverse <- function() {inv}
+  list(set = set, get = get, setInverse = setInverse, getInverse = getInverse)
+}
+
+##commit cachesolve function
+cacheSolve <- function(x, ...){
+  inv <- x$getInverse()
+  if(!is.null(inv)){
+    message("getting cached data")
+    return(inv)
+  }
+  mat <- x$get()
+  inv <- solve(mat, ...)
+  x$setInverse(inv)
+  inv
+}
+
+library(MASS) #to solve for inverse of both squared and non squared matrices 
+makeCacheMatrix <- function(x = matrix()) { #makeCacheMatrix consists of set, inv, setinv, and get inv
+  inv<-NULL #to set inverse as NULL
+  set<-function(y){
+    x<<-y
+    inv<<-NULL
+  }
+  get<-function()x #to get matrix x
+  setinv <- function(inverse) {inv <<- inverse}
+  getinv <- function() {
+    inver<-ginv(x)
+    inver%*%x #to get inverse of matrix
+  }
+  list(set = set, get = get, setinv = setinv, getinv = getinv)
+}
+
+
+## Computes the inverse of the matrix
+## retrieves the inverse
+
+cacheSolve <- function(x, ...) {
+  inv<-x$getinv()
+  if(!is.null(inv)){ #to check if inverse is NULL
+    message("getting cached data.")
+    return(inv) #to return inverse value
+  }
+  data<-x$get()
+  inv<-solve(data, ...) #to solve inverse value
+  x$setinv(inv)
+  inv
+        ## Return a matrix that is the inverse of 'x'
+}
